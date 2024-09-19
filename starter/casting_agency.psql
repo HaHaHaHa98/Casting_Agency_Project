@@ -1,0 +1,121 @@
+-- PostgreSQL database dump for Movies and Actors
+--
+
+-- Dumped from database version 11.3
+-- Dumped by pg_dump version 11.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: movies; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.movies (
+    id integer NOT NULL,
+    title text NOT NULL,
+    genre text,
+    rating float,
+    description text
+);
+
+ALTER TABLE public.movies OWNER TO student;
+
+--
+-- Name: actors; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.actors (
+    id integer NOT NULL,
+    name text NOT NULL,
+    year_of_birth integer NOT NULL,
+    gender text,
+    nationality text,
+    bio text
+);
+
+ALTER TABLE public.actors OWNER TO student;
+
+--
+-- Sequences for movies and actors IDs
+--
+
+CREATE SEQUENCE public.movies_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE public.movies_id_seq OWNER TO student;
+
+ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
+
+CREATE SEQUENCE public.actors_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE public.actors_id_seq OWNER TO student;
+
+ALTER SEQUENCE public.actors_id_seq OWNED BY public.actors.id;
+
+-- Set defaults for primary keys
+ALTER TABLE ONLY public.movies ALTER COLUMN id SET DEFAULT nextval('public.movies_id_seq'::regclass);
+ALTER TABLE ONLY public.actors ALTER COLUMN id SET DEFAULT nextval('public.actors_id_seq'::regclass);
+
+-- Insert demo records into the movies table
+COPY public.movies (id, title, genre, rating, description) FROM stdin;
+1	Spirited Away	Animation, Fantasy	8.6	A magical adventure in a spirit world.
+2	Seven Samurai	Action, Drama	8.7	Samurai defend a village from bandits.
+3	Your Name	Animation, Romance	8.4	Two teens switch bodies and lives.
+4	Rashomon	Drama, Mystery	8.2	Multiple perspectives on one crime.
+5	Battle Royale	Action, Thriller	7.6	Students are forced into a deadly game.
+6	Tokyo Story	Drama	8.2	An elderly couple's visit to their children.
+7	Akira	Animation, Sci-Fi	8.0	A dystopian world with psychic powers.
+8	Princess Mononoke	Animation, Adventure	8.4	A prince defends nature from destruction.
+9	The Wind Rises	Animation, Drama	7.8	Life of a Japanese WWII airplane designer.
+10	Departures	Drama, Music	8.1	A man becomes a professional mortician.
+\.
+
+-- Insert demo records into the actors table
+COPY public.actors (id, name, year_of_birth, gender, nationality, bio) FROM stdin;
+1	Takeshi Kitano	1947	Male	Japanese	Japanese actor and filmmaker known for action films.
+2	Rinko Kikuchi	1981	Female	Japanese	Known internationally for her role in Babel.
+3	Ken Watanabe	1959	Male	Japanese	Starred in The Last Samurai and Inception.
+4	Tatsuya Nakadai	1932	Male	Japanese	Veteran actor of many classic Japanese films.
+5	Yū Aoi	1985	Female	Japanese	Versatile actress known for her unique roles.
+6	Chieko Baishô	1941	Female	Japanese	Legendary Japanese actress.
+7	Hiroyuki Sanada	1960	Male	Japanese	Appeared in both Hollywood and Japanese films.
+8	Kōji Yakusho	1956	Male	Japanese	Award-winning actor in Japanese cinema.
+9	Mitsuki Takahata	1991	Female	Japanese	Rising star in Japanese TV and films.
+10	Haruka Ayase	1985	Female	Japanese	Popular actress and singer in Japan.
+\.
+
+-- Set sequence values after data insertion
+SELECT pg_catalog.setval('public.movies_id_seq', 10, true);
+SELECT pg_catalog.setval('public.actors_id_seq', 10, true);
+
+-- Primary keys
+ALTER TABLE ONLY public.movies ADD CONSTRAINT movies_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.actors ADD CONSTRAINT actors_pkey PRIMARY KEY (id);
+
+--
+-- PostgreSQL database dump complete
+--
