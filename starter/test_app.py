@@ -1,7 +1,6 @@
 import json
 import unittest
 from flask_sqlalchemy import SQLAlchemy
-
 from models import Actor, Movie, setup_db
 from settings import CASTING_ASSISTANT, CASTING_DIRECTOR, DATABASE_TEST_URL, EXECUTIVE_PRODUCER
 from app import create_app
@@ -106,7 +105,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             "title": "Spirited Away",
             "genre": "Animation, Fantasy",
             "rating": 8.6,
-            "description": "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, where humans are changed into beasts."
+            "description": "description"
         }, headers=self.get_headers('producer'))
         data = json.loads(res.data)
 
@@ -178,7 +177,7 @@ class CastingAgencyTestCase(unittest.TestCase):
     def test_404_if_retreive_actors_not_allowed(self):
         res = self.client().get("/actors")
         data = json.loads(res.data)
-        
+
         self.assertEqual(data["error"], 401)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "Authorization header is expected.")
@@ -189,7 +188,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             "year_of_birth": 1964,
             "gender": "Male",
             "nationality": "Beirut, Lebanon",
-            "bio": "Keanu Reeves is a Canadian actor, producer, and musician."
+            "bio": "bio"
         }, headers=self.get_headers('producer'))
         data = json.loads(res.data)
 
