@@ -2,9 +2,9 @@ import json
 import unittest
 from flask_sqlalchemy import SQLAlchemy
 
-from flaskr import create_app
 from models import Actor, Movie, setup_db
 from settings import CASTING_ASSISTANT, CASTING_DIRECTOR, DATABASE_TEST_URL, EXECUTIVE_PRODUCER
+from app import create_app
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -62,7 +62,8 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     # Test for casting director
     def test_update_movies_for_casting_director(self):
-        movie = Movie.query.first()
+        with self.app.app_context():
+            movie = Movie.query.first()
         res = self.client().patch(f"/movies/{movie.id}", json={
             "genre": "Fantasy",
             "rating": 9,
@@ -74,7 +75,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertIsNotNone(data["movie"])
 
     def test_update_actors_for_casting_director(self):
-        actor = Actor.query.first()
+        with self.app.app_context():
+            actor = Actor.query.first()
         res = self.client().patch(f"/actors/{actor.id}", json={
             "gender": "Female",
         }, headers=self.get_headers('director'))
@@ -91,13 +93,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data["total_movies"])
         self.assertTrue(len(data["movies"]))
 
-    # def test_404_if_retreive_movies_not_allowed_for_executive_producer(self):
-    #     res = self.client().get("/movies/100", headers=self.get_headers('producer'))
-    #     data = json.loads(res.data)
+    def test_401_retreive_movies_not_allowed(self):
+        res = self.client().get("/movies")
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 404)
-    #     self.assertEqual(data["success"], False)
-    #     self.assertEqual(data["message"], "resource not found")
+        self.assertEqual(data["error"], 401)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Authorization header is expected.")
 
     def test_create_movies_for_executive_producer(self):
         res = self.client().post("/movies", json={
@@ -123,7 +125,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "bad request")
 
     def test_update_movies_for_executive_producer(self):
-        movie = Movie.query.first()
+        with self.app.app_context():
+            movie = Movie.query.first()
         res = self.client().patch(f"/movies/{movie.id}", json={
             "genre": "Fantasy",
             "rating": 9,
@@ -135,7 +138,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertIsNotNone(data["movie"])
 
     def test_404_if_movie_update_not_allowed_for_executive_producer(self):
-        movie = Movie.query.first()
+        with self.app.app_context():
+            movie = Movie.query.first()
         res = self.client().patch(f"/movies/{movie.id}", json={
             "rating": "",
         }, headers=self.get_headers('producer'))
@@ -146,7 +150,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "resource not found")
 
     def test_delete_movies_for_executive_producer(self):
-        movie = Movie.query.first()
+        with self.app.app_context():   
+            movie = Movie.query.first()
         res = self.client().delete(
             f"/movies/{movie.id}", headers=self.get_headers('producer'))
         data = json.loads(res.data)
@@ -169,6 +174,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(data["total_actors"])
         self.assertTrue(len(data["actors"]))
+
+    def test_404_if_retreive_actors_not_allowed(self):
+        res = self.client().get("/actors")
+        data = json.loads(res.data)
+        
+        self.assertEqual(data["error"], 401)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Authorization header is expected.")
 
     def test_create_actors_for_executive_producer(self):
         res = self.client().post("/actors", json={
@@ -195,7 +208,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "bad request")
 
     def test_update_actors_for_executive_producer(self):
-        actor = Actor.query.first()
+        with self.app.app_context():
+            actor = Actor.query.first()
         res = self.client().patch(f"/actors/{actor.id}", json={
             "gender": "Female",
         }, headers=self.get_headers('producer'))
@@ -213,7 +227,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "resource not found")
 
     def test_delete_actors_for_executive_producer(self):
-        actor = Actor.query.first()
+        with self.app.app_context():     
+            actor = Actor.query.first()
         res = self.client().delete(
             f"/actors/{actor.id}", headers=self.get_headers('producer'))
         data = json.loads(res.data)

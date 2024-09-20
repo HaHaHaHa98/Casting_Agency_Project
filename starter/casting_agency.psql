@@ -20,7 +20,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: movies; Type: TABLE; Schema: public; Owner: student
+-- Name: movies; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.movies (
@@ -31,10 +31,10 @@ CREATE TABLE public.movies (
     description text
 );
 
-ALTER TABLE public.movies OWNER TO student;
+ALTER TABLE public.movies OWNER TO postgres;
 
 --
--- Name: actors; Type: TABLE; Schema: public; Owner: student
+-- Name: actors; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.actors (
@@ -46,7 +46,7 @@ CREATE TABLE public.actors (
     bio text
 );
 
-ALTER TABLE public.actors OWNER TO student;
+ALTER TABLE public.actors OWNER TO postgres;
 
 --
 -- Sequences for movies and actors IDs
@@ -60,7 +60,7 @@ CREATE SEQUENCE public.movies_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER TABLE public.movies_id_seq OWNER TO student;
+ALTER TABLE public.movies_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
 
@@ -72,7 +72,7 @@ CREATE SEQUENCE public.actors_id_seq
     NO MAXVALUE
     CACHE 1;
 
-ALTER TABLE public.actors_id_seq OWNER TO student;
+ALTER TABLE public.actors_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.actors_id_seq OWNED BY public.actors.id;
 
@@ -82,28 +82,28 @@ ALTER TABLE ONLY public.actors ALTER COLUMN id SET DEFAULT nextval('public.actor
 
 -- Insert demo records into the movies table
 COPY public.movies (id, title, genre, rating, description) FROM stdin;
-1	Spirited Away	Animation, Fantasy	8.6	A magical adventure in a spirit world.
-2	Seven Samurai	Action, Drama	8.7	Samurai defend a village from bandits.
-3	Your Name	Animation, Romance	8.4	Two teens switch bodies and lives.
-4	Rashomon	Drama, Mystery	8.2	Multiple perspectives on one crime.
-5	Battle Royale	Action, Thriller	7.6	Students are forced into a deadly game.
-6	Tokyo Story	Drama	8.2	An elderly couple's visit to their children.
-7	Akira	Animation, Sci-Fi	8.0	A dystopian world with psychic powers.
-8	Princess Mononoke	Animation, Adventure	8.4	A prince defends nature from destruction.
-9	The Wind Rises	Animation, Drama	7.8	Life of a Japanese WWII airplane designer.
-10	Departures	Drama, Music	8.1	A man becomes a professional mortician.
+1	Battle Royale	Action	5.6	An amazing film with stunning visuals and heartwarming moments.
+2	Tokyo Story	Drama	8.9	An amazing film with stunning visuals and heartwarming moments.
+3	Akira	Animation	8.4	An amazing film with stunning visuals and heartwarming moments.
+4	Princess Mononoke	Animation	8.4	An amazing film with stunning visuals and heartwarming moments.
+5	The Wind Rises	Animation	7.3	An amazing film with stunning visuals and heartwarming moments.
+6	Departures	Drama	8.2	An amazing film with stunning visuals and heartwarming moments.
+7	Spirited Away	Animation	8.8	An amazing film with stunning visuals and heartwarming moments.
+8	Seven Samurai	Action	8.5	An amazing film with stunning visuals and heartwarming moments.
+9	Your Name	Animation	8.6	An amazing film with stunning visuals and heartwarming moments.
+10	Rashomon	Drama	8.1	An amazing film with stunning visuals and heartwarming moments.
 \.
 
 -- Insert demo records into the actors table
 COPY public.actors (id, name, year_of_birth, gender, nationality, bio) FROM stdin;
-1	Takeshi Kitano	1947	Male	Japanese	Japanese actor and filmmaker known for action films.
-2	Rinko Kikuchi	1981	Female	Japanese	Known internationally for her role in Babel.
+1	Michael Johnson	1947	Male	American	Known for his action-packed roles and charismatic screen presence.
+2	Rinko Kikuchi	1981	Female	Japanese	Popular actress and singer in Japan.
 3	Ken Watanabe	1959	Male	Japanese	Starred in The Last Samurai and Inception.
-4	Tatsuya Nakadai	1932	Male	Japanese	Veteran actor of many classic Japanese films.
-5	Yū Aoi	1985	Female	Japanese	Versatile actress known for her unique roles.
+4	Sarah Wilson	1932	Female	New Zealander	for his dramatic roles and powerful performances.
+5	James Taylory	1932	Female	New Zealander	for his dramatic roles and powerful performances.
 6	Chieko Baishô	1941	Female	Japanese	Legendary Japanese actress.
-7	Hiroyuki Sanada	1960	Male	Japanese	Appeared in both Hollywood and Japanese films.
-8	Kōji Yakusho	1956	Male	Japanese	Award-winning actor in Japanese cinema.
+7	Hiroyuki Sanada	1960	Male	Japanese	Legendary Japanese actress.
+8	David Lee	1956	Male	South Korean Popular	Award-winning actor in Japanese cinema.
 9	Mitsuki Takahata	1991	Female	Japanese	Rising star in Japanese TV and films.
 10	Haruka Ayase	1985	Female	Japanese	Popular actress and singer in Japan.
 \.
