@@ -248,5 +248,5 @@ To deploy the tests, run
 ```bash
 dropdb castinig_agency_test
 createdb castinig_agency_test
-psql castinig_agency_test < trivia.psql
+psql castinig_agency_test < casting_agency.psql
 python test_app.py
